@@ -7,7 +7,7 @@ export default createMuiTheme({
             main: '#fff'
         },
         secondary: {
-            main: '#3a3a3a'
+            main: '#0c8ef7'
         },
         error: {
             main: red.A400,
@@ -19,7 +19,7 @@ export default createMuiTheme({
             main: green.A400 
         },
         info: {
-            main: '#0c8ef7'
+            main: '#3a3a3a'
         }
     },
 })
