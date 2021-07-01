@@ -8,18 +8,19 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Image from "next/image";
-import useStyles from "@styles/UseStyles";
+import useStyles from "src/pages/Login/UseStyles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Copyright from "@components/Copyright";
 import LinkN from "next/link"
+import Theme from "@styles/theme";
 
 const Login: React.FC = () => {
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs" classes={{
-      root: classes.background
+      root: classes.backgroundContainer
     }}>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>

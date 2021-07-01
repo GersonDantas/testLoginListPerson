@@ -4,7 +4,15 @@ import Theme from '@styles/theme'
 const useStyles = makeStyles((theme) => ({
   background: {
     background: Theme.colors.background,
-    borderRadius: 5,
+  },
+  backgroundContainer: {
+    background: Theme.colors.secondary,
+    borderRadius: 10,
+    boxShadow: '10px 10px 2px 1px rgba(0, 0, 0, 0.2)',
+    color: Theme.colors.textPrimary,
+  },
+  textField: {
+    color: '#fff'
   },
   paper: {
     marginTop: theme.spacing(8),
