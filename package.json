@@ -4,8 +4,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build",
     "dev": "next dev && ts-node-dev -r tsconfig-paths/register src/server.ts",
     "build": "next build",
     "start": "next start",
