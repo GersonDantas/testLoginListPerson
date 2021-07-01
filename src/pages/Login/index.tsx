@@ -31,6 +31,7 @@ const Login: React.FC = () => {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
+          color="primary"
             variant="outlined"
             margin="normal"
             required
@@ -60,7 +61,7 @@ const Login: React.FC = () => {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
           >
             Login
