@@ -8,7 +8,7 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Image from "next/image";
-import useStyles from "src/pages/Login/UseStyles";
+import useStyles from "@styles/UseStyles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Copyright from "@components/Copyright";
