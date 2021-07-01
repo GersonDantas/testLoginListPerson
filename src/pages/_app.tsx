@@ -1,14 +1,13 @@
-import { ThemeProvider } from "styled-components"
-import theme from "../../styles/theme"
-import Reset from "../../styles/Reset";
+import { ThemeProvider } from "styled-components";
+import Theme from "@styles/theme";
+import Reset from "@styles/Reset";
 import type { AppProps } from "next/app";
-import CssBaseline from "@material-ui/core/CssBaseline";
 
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <CssBaseline />
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={Theme}>
+        <Reset />
         <Component {...pageProps} />
       </ThemeProvider>
     </>

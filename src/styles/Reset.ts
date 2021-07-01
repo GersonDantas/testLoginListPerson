@@ -33,6 +33,8 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
  line-height: 1;
+ background: ${props => props.theme.colors.background};
+ height: 100vh;
 }
 ol, ul {
  list-style: none;
