@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <AppBar position="absolute" color="secondary">
+    <AppBar position="static" color="secondary">
       <Toolbar>
         <Typography variant="h6" className={classes.titleAppBar}>
           <Image src="/img7.png" width="100" height="36" alt="logo" />

@@ -1,0 +1,14 @@
+
+.logoContainer {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    .logo {
+        position: relative;
+        height: 40vh;
+        width: 80vw;
+    }
+}
+.tableContainer {
+    background-color: violet;
+}
