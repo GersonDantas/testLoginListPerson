@@ -1,6 +1,5 @@
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -13,15 +12,13 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Copyright from "@components/Copyright";
 import LinkN from "next/link"
-import Theme from "@styles/theme";
+import Button from "@material-ui/core/Button"
 
 const Login: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs" classes={{
-      root: classes.backgroundContainer
-    }}>
+    <Container component="main" maxWidth="xs" className={classes.backgroundContainer}>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <Image src="/img8.png" width="25" height="25" alt="logo" />
@@ -61,7 +58,7 @@ const Login: React.FC = () => {
             type="submit"
             fullWidth
             variant="contained"
-            color="secondary"
+            color="default"
             className={classes.submit}
           >
             Login

@@ -1,18 +1,15 @@
-import { ThemeProvider } from "styled-components";
-import Theme from "@styles/theme";
-import Reset from "@styles/Reset";
+import "@styles/Global.scss";
 import type { AppProps } from "next/app";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import MyTheme from "@styles/materialTheme"
+import { CssBaseline } from "@material-ui/core";
 
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <MuiThemeProvider theme={MyTheme}>
-        <ThemeProvider theme={Theme}>
-          <Reset />
+        <CssBaseline />
           <Component {...pageProps} />
-        </ThemeProvider>
       </MuiThemeProvider>
     </>
   );

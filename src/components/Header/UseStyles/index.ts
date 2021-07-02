@@ -1,12 +1,13 @@
 import { makeStyles } from "@material-ui/core/styles";
-import Theme from '@styles/theme'
+import MyTheme from "@styles/materialTheme";
+const {palette} = MyTheme
 
 const useStyles = makeStyles((theme) => ({
   titleAppBar: {
     flexGrow: 1,
   },
   appBar: {
-    background: Theme.colors.secondary,
+    background: palette.secondary.main,
   }
 }));
 

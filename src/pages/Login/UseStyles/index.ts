@@ -1,15 +1,17 @@
 import { makeStyles } from "@material-ui/core/styles";
-import Theme from '@styles/theme'
+import MyTheme from '@styles/materialTheme'
+
+const {palette} = MyTheme
 
 const useStyles = makeStyles((theme) => ({
   background: {
-    background: Theme.colors.background,
+    background: palette.secondary.main,
   },
   backgroundContainer: {
-    background: Theme.colors.secondary,
+    background: palette.background.default,
     borderRadius: 10,
-    boxShadow: '10px 10px 2px 1px rgba(0, 0, 0, 0.2)',
-    color: Theme.colors.textPrimary,
+    boxShadow: '10px 10px 20px 10px rgba(0, 0, 0, 0.2) ',
+    color: palette.primary.main,
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -20,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: Theme.colors.primary,
+    backgroundColor: palette.info.main,
   },
 
   form: {
