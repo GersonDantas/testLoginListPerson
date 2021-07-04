@@ -10,7 +10,7 @@ export default createMuiTheme({
             main: '#0c8ef7'
         },
         error: {
-            main: red.A400,
+            main: red.A100,
         },
         background: {
             default: 'linear-gradient( #8C8B8B 30%, #6bb4ef 90%)'

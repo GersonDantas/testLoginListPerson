@@ -64,7 +64,7 @@ const Login: React.FC = () => {
             Login
           </Button>
           <Grid container>
-            <Grid item xs>
+            <Grid item>
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>

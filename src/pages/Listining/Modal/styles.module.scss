@@ -1,0 +1,27 @@
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 50vh;
+    width: 50vw;
+    transform: translate(-50%, -50%);
+    background: linear-gradient( #8C8B8B 30%, #6bb4ef 90%);
+    border-radius: 10px;
+    .iconButtonDiv {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .form {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        .formContainer{
+            background-color: violet;
+            .heightWeight {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+}

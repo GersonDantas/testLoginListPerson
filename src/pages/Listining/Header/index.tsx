@@ -2,22 +2,28 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ExitToApp from "@material-ui/icons/ExitToApp";
-import Typography from "@material-ui/core/Typography";
-
 import Button from "@material-ui/core/Button";
 import useStyles from "./UseStyles";
 import Image from "next/image";
+import { Grid } from "@material-ui/core";
 
 const Header: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar position="static" className={classes.appBar}>
       <Toolbar>
-        <Typography variant="h6" className={classes.titleAppBar}>
-          <Image src="/img7.png" width="100" height="36" alt="logo" />
-        </Typography>
-        <Button >
+        <Grid container>
+          <Grid item xs={2} className={classes.logoContainer}>
+              <Image
+                src="/img7.png"
+                layout="fill"
+                alt="logo"
+                className={classes.logo}
+              />
+          </Grid>
+        </Grid>
+        <Button>
           <ExitToApp color="primary" />
         </Button>
       </Toolbar>

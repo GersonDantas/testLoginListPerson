@@ -1,19 +1,27 @@
-import React, { MouseEvent } from "react";
-import Header from "@components/Header";
+import React, { MouseEvent ,  useContext } from "react";
+import Header from "src/pages/Listining/Header";
 import Link from "next/link";
-import LinkM from "@material-ui/core/Link";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Title from "@components/Title";
+import Title from "src/pages/Listining/Title";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import useStyles from "src/pages/Listining/UseStyles";
-import styles from "./styles.module.scss";
-import Image from "next/image";
+import styles from "./UseStyles/styles.module.scss";
+import styled from "@material-ui/core/styles/styled";
+import Fab from "@material-ui/core/Fab";
 import Container from "@material-ui/core/Container";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
+import Delete from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import Checkbox from "@material-ui/core/Checkbox";
+import Modal from "./Modal";
+import { Context } from '@store/context';
+
 
 function createPerson(
   id: number,
@@ -36,21 +44,33 @@ function preventDefault(event: MouseEvent) {
   event.preventDefault();
 }
 
+const StyledFab = styled(Fab)({
+  position: "absolute",
+  zIndex: 1,
+  top: 90,
+  right: 20,
+  margin: "0 auto",
+});
+
 const Listining: React.FC = () => {
+  const { handleOpen } = useContext(Context);
   const classes = useStyles();
   return (
     <>
+    {<Modal />}
       <Header />
-      <div className={styles.logoContainer}>
-        <div className={styles.logo}>
-          <Image src="/img7.png" layout="fill" alt="logo" />
-        </div>
-      </div>
-      <Container maxWidth="lg">
-        <Grid container spacing={3}>
+      <Container maxWidth="lg" className={classes.container}>
+        <Grid container>
+          <StyledFab
+            color="secondary"
+            aria-label="add"
+            onClick={handleOpen}
+          >
+            <AddIcon />
+          </StyledFab>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Title>Recent Orders</Title>
+              <Title>Persons</Title>
               <Table size="small" className={styles.table}>
                 <TableHead>
                   <TableRow>
@@ -58,7 +78,17 @@ const Listining: React.FC = () => {
                     <TableCell>Idade</TableCell>
                     <TableCell>Altura</TableCell>
                     <TableCell>Peso</TableCell>
-                    <TableCell align="right">Imc</TableCell>
+                    <TableCell>Imc</TableCell>
+                    <TableCell align="right" className={styles.buttons}>
+                      <IconButton>
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="right" className={styles.buttons}>
+                      <IconButton>
+                        <Delete />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -68,16 +98,21 @@ const Listining: React.FC = () => {
                       <TableCell>{row.age}</TableCell>
                       <TableCell>{row.height}</TableCell>
                       <TableCell>{row.weight}</TableCell>
-                      <TableCell align="right">{row.imc}</TableCell>
+                      <TableCell>{row.imc}</TableCell>
+                      <TableCell align="right" className={styles.buttons}>
+                        <IconButton>
+                          <Checkbox />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="right" className={styles.buttons}>
+                        <IconButton>
+                          <Checkbox />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-              <div className={classes.seeMore}>
-                <LinkM color="primary" href="#" onClick={preventDefault}>
-                  See more orders
-                </LinkM>
-              </div>
             </Paper>
           </Grid>
         </Grid>

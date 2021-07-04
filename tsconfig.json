@@ -17,12 +17,10 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@services/*": ["./src/services/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@store/*": ["src/store/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
-  "files": [
-    "src/styles/styled.d.ts"
-  ]
+  "exclude": ["node_modules"]
 }

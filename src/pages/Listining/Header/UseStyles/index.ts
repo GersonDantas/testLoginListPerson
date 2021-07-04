@@ -6,8 +6,19 @@ const useStyles = makeStyles((theme) => ({
   titleAppBar: {
     flexGrow: 1,
   },
+  logoContainer:{
+    position: "relative",
+    height: "6vh",
+    width: "10vw",
+  },
+  logo: {
+    backgroundColor: palette.info.main,
+    borderRadius: 10,
+    height: '100vh',
+    width: '100vw',
+  },
   appBar: {
-    background: palette.secondary.main,
+    background: palette.background.default,
   }
 }));
 
