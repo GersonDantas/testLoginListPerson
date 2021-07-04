@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["./src/components/*"],
+      "@globalComponents/*": ["src/globalComponents/*"],
       "@services/*": ["./src/services/*"],
       "@styles/*": ["src/styles/*"],
       "@store/*": ["src/store/*"],

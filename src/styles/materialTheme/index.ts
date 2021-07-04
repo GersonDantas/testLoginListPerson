@@ -13,7 +13,7 @@ export default createMuiTheme({
             main: red.A100,
         },
         background: {
-            default: 'linear-gradient( #8C8B8B 30%, #6bb4ef 90%)'
+            default: 'linear-gradient(to left top, #8C8B8B 30%, #6bb4ef 70%)'
         },
         success: {
             main: green.A400 

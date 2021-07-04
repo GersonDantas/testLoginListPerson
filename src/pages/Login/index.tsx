@@ -10,7 +10,7 @@ import Image from "next/image";
 import useStyles from "src/pages/Login/UseStyles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Copyright from "@components/Copyright";
+import Copyright from "@globalComponents/Copyright";
 import LinkN from "next/link"
 import Button from "@material-ui/core/Button"
 
@@ -64,14 +64,14 @@ const Login: React.FC = () => {
             Login
           </Button>
           <Grid container>
-            <Grid item>
+            <Grid item xs>
               <Link href="#" variant="body2">
-                Forgot password?
+                esqueceu sua senha?
               </Link>
             </Grid>
             <Grid item>
               <Link href="#" variant="body2">
-                {"Don't have an account? Login"}
+                {"você não tem uma conta?"}
               </Link>
             </Grid>
           </Grid>

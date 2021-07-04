@@ -8,16 +8,23 @@ import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
+import { useTheme } from "@material-ui/core/styles";
+import Title from "../Title"
+
 
 const Modal: React.FC = () => {
   const { handleOpen, handleClose, isVisibileModalSuporte } =
     useContext(Context);
+  const theme = useTheme();
   return (
     <ModalM hideBackdrop open={isVisibileModalSuporte} onClose={handleClose}>
       <div className={styles.box}>
         <IconButton className={styles.iconButtonDiv} onClick={handleClose}>
           <Cancel color="error" />
         </IconButton>
+        <Grid className={styles.title}>
+          <Title>Cadastre uma pessoa</Title>
+        </Grid>
         <form className={styles.form}>
           <Container className={styles.formContainer} maxWidth="xs">
             <Grid item xs={12}>
@@ -40,7 +47,7 @@ const Modal: React.FC = () => {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
+                id="surname"
                 label="sobrenome"
                 name="surname"
               />
@@ -52,13 +59,17 @@ const Modal: React.FC = () => {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
+                id="date"
+                type="date"
                 label="Data de nascimento"
                 name="DateOfBirth"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Grid>
             <Grid container className={styles.heightWeight}>
-              <Grid item xs={5}>
+              <Grid item xs={12} sm={5}>
                 <TextField
                   color="primary"
                   variant="outlined"
@@ -70,7 +81,7 @@ const Modal: React.FC = () => {
                   name="height"
                 />
               </Grid>
-              <Grid item xs={5} >
+              <Grid item xs={12} sm={5}>
                 <TextField
                   color="primary"
                   variant="outlined"
@@ -81,6 +92,31 @@ const Modal: React.FC = () => {
                   label="peso"
                   name="weight"
                 />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              justify="flex-end"
+              className={styles.buttonsContainer}
+              spacing={1}
+            >
+              <Grid item xs={12} sm={3}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  style={{
+                    color: theme.palette.primary.main,
+                    backgroundColor: theme.palette.error.main,
+                  }}
+                  onClick={handleClose}
+                >
+                  Cancelar
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <Button fullWidth variant="contained" color="secondary">
+                  cadastrar
+                </Button>
               </Grid>
             </Grid>
           </Container>
