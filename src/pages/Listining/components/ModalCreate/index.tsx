@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import ModalM from "@material-ui/core/Modal";
 import { Context } from "@store/context";
 import styles from "./styles.module.scss";
@@ -10,14 +10,27 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import { useTheme } from "@material-ui/core/styles";
 import Title from "../Title"
+import { SubmitHandler, useForm } from "react-hook-form";
 
+interface IFormInput {
+  name: string
+  surname: string
+  DateOfBirth: Date
+  height: number
+  weight: number
+}
 
 const Modal: React.FC = () => {
-  const { handleOpen, handleClose, isVisibileModalSuporte } =
-    useContext(Context);
+  const {  handleClose, isVisibileModalCreate } =
+  useContext(Context);
+  const { register, handleSubmit } = useForm<IFormInput>();
+  const onSubmit: SubmitHandler<IFormInput> = data => console.log(data);
+
+  const [newPerson, setNewPerson] = useState();
+
   const theme = useTheme();
   return (
-    <ModalM hideBackdrop open={isVisibileModalSuporte} onClose={handleClose}>
+    <ModalM hideBackdrop open={isVisibileModalCreate} onClose={handleClose}>
       <div className={styles.box}>
         <IconButton className={styles.iconButtonDiv} onClick={handleClose}>
           <Cancel color="error" />
@@ -25,7 +38,7 @@ const Modal: React.FC = () => {
         <Grid className={styles.title}>
           <Title>Cadastre uma pessoa</Title>
         </Grid>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <Container className={styles.formContainer} maxWidth="xs">
             <Grid item xs={12}>
               <TextField
@@ -36,8 +49,8 @@ const Modal: React.FC = () => {
                 fullWidth
                 id="email"
                 label="nome"
-                name="name"
                 autoFocus
+                {...register("name")}
               />
             </Grid>
             <Grid item xs={12}>
@@ -49,7 +62,7 @@ const Modal: React.FC = () => {
                 fullWidth
                 id="surname"
                 label="sobrenome"
-                name="surname"
+                {...register("surname")}
               />
             </Grid>
             <Grid item xs={12}>
@@ -62,10 +75,10 @@ const Modal: React.FC = () => {
                 id="date"
                 type="date"
                 label="Data de nascimento"
-                name="DateOfBirth"
                 InputLabelProps={{
                   shrink: true,
                 }}
+                {...register("DateOfBirth")}
               />
             </Grid>
             <Grid container className={styles.heightWeight}>
@@ -78,7 +91,7 @@ const Modal: React.FC = () => {
                   fullWidth
                   id="email"
                   label="altura"
-                  name="height"
+                  {...register("height")}
                 />
               </Grid>
               <Grid item xs={12} sm={5}>
@@ -90,7 +103,7 @@ const Modal: React.FC = () => {
                   fullWidth
                   id="email"
                   label="peso"
-                  name="weight"
+                  {...register("weight")}
                 />
               </Grid>
             </Grid>

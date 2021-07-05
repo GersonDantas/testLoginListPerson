@@ -1,36 +1,64 @@
-import React, { MouseEvent, useContext } from "react";
+import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import Header from "./components/Header";
 import Link from "next/link";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TableHead from "@material-ui/core/TableHead";
 import Title from "./components/Title";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import useStyles from "src/pages/Listining/UseStyles";
-import styles from "./UseStyles/styles.module.scss";
 import Fab from "@material-ui/core/Fab";
 import Container from "@material-ui/core/Container";
 import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
-import Delete from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import Modal from "./components/Modal";
+import Modal from "./components/ModalCreate";
 import { Context } from "@store/context";
 import Copyright from "@globalComponents/Copyright";
 import Box from "@material-ui/core/Box";
-import rows from "./components/ObjMoca"
-
-
+import TableRows from "./components/TableRows";
 
 function preventDefault(event: MouseEvent) {
   event.preventDefault();
 }
 
+interface person {
+  id: number;
+  name: string;
+  surname?: string;
+  birth?: Date;
+  height?: number;
+  weight?: number;
+}
+
+const rows = [
+  { id: 0, name: "Carlos", age: 27, height: 1.6, weight: 78.9, imc: 312.44 },
+  {
+    id: 1,
+    name: "Maria Dantas",
+    age: 27,
+    height: 1.6,
+    weight: 78.9,
+    imc: 312.4,
+  },
+  {
+    id: 2,
+    name: "Maria souza",
+    age: 27,
+    height: 1.6,
+    weight: 78.9,
+    imc: 312.44,
+  },
+];
+
 const Listining: React.FC = () => {
-  const { handleOpen } = useContext(Context);
+  const { handleOpenCreate, handleOpenUpdate, setUpdateRows, updateRows } =
+    useContext(Context);
+  useEffect(() => {
+    setUpdateRows(rows);
+  });
+
   const classes = useStyles();
   return (
     <>
@@ -42,7 +70,11 @@ const Listining: React.FC = () => {
             <Paper className={classes.paper}>
               <Grid container spacing={1} className={classes.containerPerson}>
                 <Grid item>
-                  <Fab color="secondary" aria-label="add" onClick={handleOpen}>
+                  <Fab
+                    color="secondary"
+                    aria-label="add"
+                    onClick={handleOpenCreate}
+                  >
                     <AddIcon />
                   </Fab>
                 </Grid>
@@ -75,25 +107,7 @@ const Listining: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.id}>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.age}</TableCell>
-                      <TableCell>{row.height}</TableCell>
-                      <TableCell>{row.weight}</TableCell>
-                      <TableCell>{row.imc}</TableCell>
-                      <TableCell align="right" className={classes.buttons}>
-                        <IconButton onClick={() => {}}>
-                          <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                      <TableCell align="right" className={classes.buttons}>
-                        <IconButton>
-                          <Delete />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  <TableRows />
                 </TableBody>
               </Table>
               <Box mt={8}>

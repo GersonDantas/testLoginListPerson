@@ -1,40 +1,78 @@
-import { createContext, ReactNode, useState, useContext } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useState,
+  useContext,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 type ContextData = {
-  isVisibileModalSuporte: boolean;
+  isVisibileModalCreate: boolean;
+  handleOpenCreate: () => void;
+  handleOpenUpdate: () => void;
+  isVisibileModalUpdate: boolean;
   handleClose: () => void;
-  handleOpen:() => void;
-}
+  updateRows: Array<{
+    id?: number;
+    name?: string;
+    age?: number;
+    imc?: number;
+    height?: number;
+    weight?: number;
+  }>;
+  setUpdateRows: Dispatch<
+    SetStateAction<
+      Array<{
+        id?: number;
+        name?: string;
+        age?: number;
+        imc?: number;
+        height?: number;
+        weight?: number;
+      }>
+    >
+  >;
+};
 
-export const Context = createContext( {} as ContextData );
+export const Context = createContext({} as ContextData);
 
 type ContextProvider = {
   children: ReactNode;
-  
-}
+};
 
-export function ContextProvider ( {children }: ContextProvider) {
+export function ContextProvider({ children }: ContextProvider) {
+  const [isVisibileModalCreate, setIsvisibleModalCreate] = useState(false);
+  const [isVisibileModalUpdate, setIsvisibleModalUpdate] = useState(false);
+  const [updateRows, setUpdateRows] = useState([{}]);
 
-  const [ isVisibileModalSuporte, setIsvisibleModalSuporte ] = useState(false);
-  
-  const handleOpen = () => {
-    setIsvisibleModalSuporte(true);
+  const handleOpenCreate = () => {
+    setIsvisibleModalCreate(true);
   };
   const handleClose = () => {
-    setIsvisibleModalSuporte(false);
+    setIsvisibleModalCreate(false);
+    setIsvisibleModalUpdate(false);
+  };
+  const handleOpenUpdate = () => {
+    setIsvisibleModalUpdate(true);
   };
 
   return (
-    <Context.Provider value={{
-      isVisibileModalSuporte,
-      handleClose,
-      handleOpen
-      }}>
+    <Context.Provider
+      value={{
+        isVisibileModalCreate,
+        handleClose,
+        handleOpenCreate,
+        isVisibileModalUpdate,
+        handleOpenUpdate,
+        updateRows,
+        setUpdateRows,
+      }}
+    >
       {children}
     </Context.Provider>
-  )
+  );
 }
-
 
 // export const  useContextData = () => {
 //   return useContext(Context);
