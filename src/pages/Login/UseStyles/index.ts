@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     boxShadow: '10px 10px 20px 10px rgba(0, 0, 0, 0.2) ',
     color: theme.palette.primary.main,
+    
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -16,7 +17,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-
+  error: {
+    color: theme.palette.error.main,
+    margin: 0,
+  },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.info.main,
@@ -34,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   titleAppBar: {
     flexGrow: 1,
+  },
+  fake: {
+    fontSize: '12px'
   }
 }));
 

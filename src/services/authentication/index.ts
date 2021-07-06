@@ -5,6 +5,6 @@ declare interface Data {
     password: string;
 }
 
-export const Login = (data: Data) => {
+export const handleLogin = (data: Data) => {
     return api.post("/api/v1/Auth/LogIn", data).then((res) => res.data);
 };
