@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import ModalM from "@material-ui/core/Modal";
-import { Context } from "@store/context";
+import { Context } from "@store/context/ListiningContext";
 import styles from "./styles.module.scss";
 import Button from "@material-ui/core/Button";
 import Cancel from "@material-ui/icons/Cancel";

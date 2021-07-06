@@ -37,11 +37,11 @@ type ContextData = {
 
 export const Context = createContext({} as ContextData);
 
-type ContextProvider = {
+export type ContextProvider = {
   children: ReactNode;
 };
 
-export function ContextProvider({ children }: ContextProvider) {
+export function ListiningContextProvider({ children }: ContextProvider) {
   const [isVisibileModalCreate, setIsvisibleModalCreate] = useState(false);
   const [isVisibileModalUpdate, setIsvisibleModalUpdate] = useState(false);
   const [updateRows, setUpdateRows] = useState([{}]);
@@ -73,7 +73,3 @@ export function ContextProvider({ children }: ContextProvider) {
     </Context.Provider>
   );
 }
-
-// export const  useContextData = () => {
-//   return useContext(Context);
-// }

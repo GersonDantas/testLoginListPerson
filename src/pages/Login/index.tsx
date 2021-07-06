@@ -1,7 +1,5 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 //imports material-ui
 import Avatar from "@material-ui/core/Avatar";
@@ -18,59 +16,51 @@ import Copyright from "@globalComponents/Copyright";
 
 import Image from "next/image";
 import LinkN from "next/link";
+import router, { useRouter } from "next/router";
 
 import useStyles from "./UseStyles";
 import { storeToken } from "@services/authorization";
 import { handleLogin } from "@services/authentication";
-
-interface IFormInput {
-  username: string;
-  password: string;
-}
-
-const shema = yup.object().shape({
-  username: yup
-    .string()
-    .email("Digite um email válido")
-    .required("o campo email é obrigatório"),
-  password: yup.string().required("senha obrigatória"),
-});
+import { SignInData, AuthContext} from "@store/context/AuthContext";
 
 const Login: React.FC = () => {
-
+  const {signIn} =  useContext(AuthContext)
   const [err, setErr] = useState("");
-
-  useEffect(() => {
-    reset()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [err])
-
+  
+  
+  
+  const {
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm<SignInData>();
+  
+  
+  async function handleSignIn(data: SignInData) {
+    try {
+      console.log(data)
+      await signIn(data)
+    } catch (err) {
+      setErr("Dados inválidos, verifique suas informações");
+    }
+  };
+  
+  //see password
   const seePassword = () => {
     const pass: any = document.getElementById("password");
-    if (pass.type == "password") {
+    if (pass.type === "password") {
       pass.type = "text";
     } else {
       pass.type = "password";
     }
   };
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<IFormInput>({
-    resolver: yupResolver(shema),
-  });
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    try {
-      const user = await handleLogin(data);
-      console.log(user);
-      storeToken(user.Authorization);
-    } catch (err) {
-      setErr("Dados inválidos, verifique seus dados")
-    }
-  };
+  
+  useEffect(() => {
+    reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [err]);
 
   const classes = useStyles();
 
@@ -87,7 +77,7 @@ const Login: React.FC = () => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+        <form onSubmit={handleSubmit(handleSignIn)} className={classes.form}>
           <TextField
             color="primary"
             variant="outlined"
@@ -98,6 +88,7 @@ const Login: React.FC = () => {
             {...register("username")}
             autoComplete="email"
             autoFocus
+            onClick={() => setErr("")}
           />
           <p className={classes.error}>{errors.username?.message}</p>
           <TextField
@@ -109,24 +100,20 @@ const Login: React.FC = () => {
             {...register("password")}
             autoComplete="current-password"
             type="password"
+            onClick={() => setErr("")}
           />
-          <p className={classes.error}>{errors.password?.message}</p>
           <FormControlLabel
             control={
-              <Checkbox
-                value="see"
-                onClick={seePassword}
-                color="primary"
-              />
+              <Checkbox value="see" onClick={seePassword} color="primary" />
             }
             label="Mostrar senha"
           />
+          <p className={classes.error}>{errors.password?.message}</p>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="default"
-            onClick={() => setTimeout(() => setErr(""), 2500)}
             className={classes.submit}
           >
             Login
@@ -134,7 +121,7 @@ const Login: React.FC = () => {
           {!!err && <p className={classes.error}>{err}</p>}
           <Grid container>
             <Grid item xs>
-              <Link href="#" className={classes.fake}  variant="body2">
+              <Link href="#" className={classes.fake} variant="body2">
                 esqueceu sua senha?
               </Link>
             </Grid>

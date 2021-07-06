@@ -4,7 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import EditIcon from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
-import { Context } from "@store/context";
+import { Context } from "@store/context/ListiningContext";
 import useStyles from "./UseStyles";
 import ModalUpdate from "../ModalUpdate";
 

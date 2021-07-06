@@ -9,7 +9,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     boxShadow: '10px 10px 20px 10px rgba(0, 0, 0, 0.2) ',
     color: theme.palette.primary.main,
-    
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    height: "fit-content",
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -17,18 +21,20 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  error: {
-    color: theme.palette.error.main,
-    margin: 0,
-  },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.info.main,
   },
-
+  
   form: {
-    widht: "100%",
     marginTop: theme.spacing(1),
+  },
+  inputs: {
+    marginBottom: theme.spacing(4)
+  },
+  error: {
+    color: theme.palette.error.main,
+    margin: 0,
   },
 
   submit: {
