@@ -14,22 +14,22 @@ type ContextData = {
   isVisibileModalUpdate: boolean;
   handleClose: () => void;
   updateRows: Array<{
-    id?: number;
-    name?: string;
-    age?: number;
-    imc?: number;
-    height?: number;
-    weight?: number;
+    Id?: string;
+    Name?: string;
+    Surname?: string
+    Height?: number;
+    Weigth?: number;
+    DateOfBirth?: string
   }>;
   setUpdateRows: Dispatch<
     SetStateAction<
       Array<{
-        id?: number;
-        name?: string;
-        age?: number;
-        imc?: number;
-        height?: number;
-        weight?: number;
+        Id?: string;
+        Name?: string;
+        Surname?: number;
+        Height?: number;
+        Weigth?: number;
+        DateOfBirth?: string
       }>
     >
   >;

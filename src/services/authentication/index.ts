@@ -1,10 +1,6 @@
-import api from "../api"
+import {api} from "../api/clientSide"
+import {SignInData} from "@store/context/AuthContext"
 
-declare interface Data {
-    username: string;
-    password: string;
-}
-
-export const handleLogin = (data: Data) => {
-    return api.post("/api/v1/Auth/LogIn", data).then((res) => res.data);
+export const handleLogin = async (data: SignInData) => {
+    return await api.post("/api/v1/Auth/LogIn", data).then((res) => res.data);
 };

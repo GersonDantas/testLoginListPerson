@@ -19,7 +19,6 @@ import LinkN from "next/link";
 import router, { useRouter } from "next/router";
 
 import useStyles from "./UseStyles";
-import { storeToken } from "@services/authorization";
 import { handleLogin } from "@services/authentication";
 import { SignInData, AuthContext} from "@store/context/AuthContext";
 
@@ -40,7 +39,6 @@ const Login: React.FC = () => {
   
   async function handleSignIn(data: SignInData) {
     try {
-      console.log(data)
       await signIn(data)
     } catch (err) {
       setErr("Dados inválidos, verifique suas informações");

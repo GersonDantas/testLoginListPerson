@@ -1,4 +1,4 @@
-import React, { MouseEvent, useContext, useEffect, useState } from "react";
+import React, { MouseEvent, useContext } from "react";
 import Header from "./components/Header";
 import Link from "next/link";
 import Table from "@material-ui/core/Table";
@@ -18,6 +18,9 @@ import { Context } from "@store/context/ListiningContext";
 import Copyright from "@globalComponents/Copyright";
 import Box from "@material-ui/core/Box";
 import TableRows from "./components/TableRows";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
+import { getApiClient } from "@services/api/serverSide";
 
 function preventDefault(event: MouseEvent) {
   event.preventDefault();
@@ -53,11 +56,8 @@ const rows = [
 ];
 
 const Listining: React.FC = () => {
-  const { handleOpenCreate, handleOpenUpdate, setUpdateRows, updateRows } =
+  const { handleOpenCreate, handleOpenUpdate, setUpdateRows} =
     useContext(Context);
-  useEffect(() => {
-    setUpdateRows(rows);
-  });
 
   const classes = useStyles();
   return (
@@ -123,3 +123,23 @@ const Listining: React.FC = () => {
 };
 
 export default Listining;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parseCookies(ctx);
+
+  const apiClient = getApiClient(ctx);
+
+  const token = cookies["Leadsoft.UserInformation"]
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

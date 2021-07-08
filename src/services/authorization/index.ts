@@ -1,12 +1,9 @@
+import  Router  from "next/router"
+import { destroyCookie } from "nookies"
 
 
-type Authorization = string
+export const Logout = () => {
+    destroyCookie(null, 'Leadsoft.UserInformation')
+    Router.push("/")
+}
 
-//Guardando token no local storage
-
-export const storeToken = (token: Authorization) => {
-    if (typeof window !== "undefined") {
-      //antes de colocar, testa se window existe, para evitar carregar window no lado servidor
-      window.localStorage.setItem("token", token);
-    }
-};

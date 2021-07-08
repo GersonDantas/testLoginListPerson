@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import useStyles from "./UseStyles";
 import Image from "next/image";
 import { Grid } from "@material-ui/core";
+import { Logout } from "@services/authorization";
 
 const Header: React.FC = () => {
   const classes = useStyles();
@@ -23,7 +24,7 @@ const Header: React.FC = () => {
               />
           </Grid>
         </Grid>
-        <Button>
+        <Button onClick={() => Logout()}>
           <ExitToApp color="primary" />
         </Button>
       </Toolbar>

@@ -1,10 +1,11 @@
 import { Children, createContext, useState } from "react";
-import { setCookie } from "nookies";
+import { parseCookies, setCookie } from "nookies";
 import Router from "next/router";
 
 import { handleLogin } from "@services/authentication";
 import { ContextProvider } from "./ListiningContext";
 import { useEffect } from "react";
+import { api } from "@services/api/clientSide";
 
 export type SignInData = {
   username: string;
@@ -23,7 +24,6 @@ export function AuthProvider({ children }: ContextProvider) {
 
   const isAuthenticated = !!token;
 
-  useEffect(() => {}, []);
 
   async function signIn({ username, password }: SignInData) {
     const { Authorization } = await handleLogin({
@@ -31,20 +31,19 @@ export function AuthProvider({ children }: ContextProvider) {
       password,
     });
 
-    //saving user information
-    setCookie( undefined,"Leadsoft.UserInformation", JSON.stringify({
-        user: {
-          username,
-          password,
-        },
-        Authorization,
-      }),
+    //saving user information in cookies
+    setCookie(
+      undefined,
+      "Leadsoft.UserInformation",
+      Authorization,   //convert for JSON.stringify
       {
         maxAge: 60 * 60 * 1, // 1 hour
       }
     );
 
     setToken(Authorization);
+
+    api.defaults.headers["Authorization"] = Authorization;
 
     Router.push("/Listining");
   }
