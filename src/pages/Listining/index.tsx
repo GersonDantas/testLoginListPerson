@@ -1,63 +1,58 @@
-import React, { MouseEvent, useContext } from "react";
-import Header from "./components/Header";
+import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import Link from "next/link";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
+import Router from "next/router";
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
-import Title from "./components/Title";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import useStyles from "src/pages/Listining/UseStyles";
 import Fab from "@material-ui/core/Fab";
 import Container from "@material-ui/core/Container";
 import AddIcon from "@material-ui/icons/Add";
-import Modal from "./components/ModalCreate";
-import { Context } from "@store/context/ListiningContext";
-import Copyright from "@globalComponents/Copyright";
 import Box from "@material-ui/core/Box";
+
+import Copyright from "@globalComponents/Copyright";
+import { Context } from "@store/context/ListiningContext";
 import TableRows from "./components/TableRows";
-import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
+import Header from "./components/Header";
+import Title from "./components/Title";
+import Modal from "./components/ModalCreate";
+import useStyles from "./UseStyles";
 import { getApiClient } from "@services/api/serverSide";
+import { ListiningPersons } from "@services/persons";
 
-function preventDefault(event: MouseEvent) {
-  event.preventDefault();
-}
-
-interface person {
-  id: number;
-  name: string;
-  surname?: string;
-  birth?: Date;
-  height?: number;
-  weight?: number;
-}
-
-const rows = [
-  { id: 0, name: "Carlos", age: 27, height: 1.6, weight: 78.9, imc: 312.44 },
-  {
-    id: 1,
-    name: "Maria Dantas",
-    age: 27,
-    height: 1.6,
-    weight: 78.9,
-    imc: 312.4,
-  },
-  {
-    id: 2,
-    name: "Maria souza",
-    age: 27,
-    height: 1.6,
-    weight: 78.9,
-    imc: 312.44,
-  },
-];
 
 const Listining: React.FC = () => {
-  const { handleOpenCreate, handleOpenUpdate, setUpdateRows} =
+  const { handleOpenCreate, handleOpenUpdate, setUpdateRows, updateRows} =
     useContext(Context);
+  const [fullyear, setFulyear] = useState<number>();
+  const [refresh, setRefresh] = useState(false)
+
+  const handleRouteChange = () => {
+    setRefresh(!refresh)
+  }
+
+  Router.events.on('routeChangeStart', handleRouteChange)
+
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const persons = await ListiningPersons();
+        setUpdateRows(persons);
+      } catch (error) {
+        alert("Erro no servidor: " + error.message);
+      }
+    })();
+    const y = new Date().getFullYear();
+    setFulyear(y);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refresh]);
 
   const classes = useStyles();
   return (
@@ -107,7 +102,10 @@ const Listining: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRows />
+                  <TableRows 
+                    persons={updateRows}
+                    fullyear={fullyear}
+                  />
                 </TableBody>
               </Table>
               <Box mt={8}>
@@ -129,7 +127,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const apiClient = getApiClient(ctx);
 
-  const token = cookies["Leadsoft.UserInformation"]
+  const token = cookies["Leadsoft.UserInformation"];
   if (!token) {
     return {
       redirect: {

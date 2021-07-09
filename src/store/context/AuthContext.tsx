@@ -6,11 +6,7 @@ import { handleLogin } from "@services/authentication";
 import { ContextProvider } from "./ListiningContext";
 import { useEffect } from "react";
 import { api } from "@services/api/clientSide";
-
-export type SignInData = {
-  username: string;
-  password: string;
-};
+import {SignInData} from "@myGlobaltypes/index";
 
 type AuthContextType = {
   isAuthenticated: boolean;

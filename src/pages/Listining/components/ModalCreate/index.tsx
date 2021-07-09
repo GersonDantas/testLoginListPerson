@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
 import ModalM from "@material-ui/core/Modal";
-import { Context } from "@store/context/ListiningContext";
-import styles from "./styles.module.scss";
 import Button from "@material-ui/core/Button";
 import Cancel from "@material-ui/icons/Cancel";
 import IconButton from "@material-ui/core/IconButton";
@@ -9,22 +9,18 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import { useTheme } from "@material-ui/core/styles";
-import Title from "../Title"
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Context } from "@store/context/ListiningContext";
 
-interface IFormInput {
-  name: string
-  surname: string
-  DateOfBirth: Date
-  height: number
-  weight: number
-}
+import styles from "./styles.module.scss";
+import Title from "../Title";
+import { IFormCreate } from "@myGlobaltypes/index";
 
 const Modal: React.FC = () => {
-  const {  handleClose, isVisibileModalCreate } =
-  useContext(Context);
-  const { register, handleSubmit } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = data => console.log(data);
+  const { handleClose, isVisibileModalCreate } = useContext(Context);
+  const { register, handleSubmit } = useForm<IFormCreate>();
+  async function handleCreate(data: IFormCreate) {
+    console.log(data);
+  }
 
   const [newPerson, setNewPerson] = useState();
 
@@ -38,7 +34,7 @@ const Modal: React.FC = () => {
         <Grid className={styles.title}>
           <Title>Cadastre uma pessoa</Title>
         </Grid>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles.form} onSubmit={handleSubmit(handleCreate)}>
           <Container className={styles.formContainer} maxWidth="xs">
             <Grid item xs={12}>
               <TextField
@@ -127,7 +123,12 @@ const Modal: React.FC = () => {
                 </Button>
               </Grid>
               <Grid item xs={12} sm={3}>
-                <Button fullWidth variant="contained" color="secondary">
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                >
                   cadastrar
                 </Button>
               </Grid>

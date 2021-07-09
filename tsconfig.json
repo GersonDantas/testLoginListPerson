@@ -19,6 +19,7 @@
       "@services/*": ["./src/services/*"],
       "@styles/*": ["src/styles/*"],
       "@store/*": ["src/store/*"],
+      "@myGlobaltypes/*": ["src/myGlobalTypes/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

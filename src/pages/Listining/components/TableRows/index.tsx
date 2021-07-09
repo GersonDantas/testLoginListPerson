@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
+import {} from "date-fns";
 
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
@@ -9,34 +10,38 @@ import IconButton from "@material-ui/core/IconButton";
 import { Context } from "@store/context/ListiningContext";
 import useStyles from "./UseStyles";
 import ModalUpdate from "../ModalUpdate";
-import { ListiningPersons } from "@services/persons";
+import { persons } from "@myGlobaltypes/index";
 
-const TableRows: React.FC = () => {
+interface Props {
+  persons: persons
+  fullyear?: number
+}
+
+const TableRows: React.FC<Props> = ({persons, fullyear}) => {
   const { handleOpenUpdate, updateRows, setUpdateRows } = useContext(Context);
   const classes = useStyles();
-  useEffect(() => {
-    (async () => {
-      const persons = await ListiningPersons();
-      console.log(persons);
-      await setUpdateRows(persons);
-    })();
-  }, []);
+  
   return (
     <>
-      {updateRows.map((row) => (
+      {persons.map((row) => (
         <>
           <ModalUpdate />
           <TableRow key={row.Id}>
             <TableCell>{`${row.Name} ${row.Surname}`}</TableCell>
-            <TableCell>{row.DateOfBirth}</TableCell>
-            <TableCell>{row.Height}</TableCell>
-            <TableCell>{row.Weigth}</TableCell>
             <TableCell>
               {
-              row.Weigth && row.Height
-                ? `${row.Weigth / (row.Height * row.Height)}`.substring(0,5)
-                : NaN
-              }
+                `${fullyear
+                ? fullyear - parseInt(`${row.DateOfBirth?.substring(0, 4)}`, 10)
+                : "indisponível"} Anos
+                `
+                }
+            </TableCell>
+            <TableCell>{`${row.Height?.toFixed(2)} mt`}</TableCell>
+            <TableCell>{`${row.Weigth} Kg`}</TableCell>
+            <TableCell>
+              {row.Weigth && row.Height
+                ? `${row.Weigth / (row.Height * row.Height)}`.substring(0, 5)
+                : NaN}
             </TableCell>
             <TableCell align="right" className={classes.buttons}>
               <IconButton onClick={handleOpenUpdate}>

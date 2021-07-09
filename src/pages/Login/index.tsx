@@ -20,13 +20,12 @@ import router, { useRouter } from "next/router";
 
 import useStyles from "./UseStyles";
 import { handleLogin } from "@services/authentication";
-import { SignInData, AuthContext} from "@store/context/AuthContext";
+import { AuthContext} from "@store/context/AuthContext";
+import { SignInData } from "@myGlobaltypes/index";
 
 const Login: React.FC = () => {
   const {signIn} =  useContext(AuthContext)
   const [err, setErr] = useState("");
-  
-  
   
   const {
     register,

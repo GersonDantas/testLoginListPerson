@@ -2,10 +2,10 @@ import {
   createContext,
   ReactNode,
   useState,
-  useContext,
   Dispatch,
   SetStateAction,
 } from "react";
+import { persons } from "@myGlobaltypes/index";
 
 type ContextData = {
   isVisibileModalCreate: boolean;
@@ -13,26 +13,8 @@ type ContextData = {
   handleOpenUpdate: () => void;
   isVisibileModalUpdate: boolean;
   handleClose: () => void;
-  updateRows: Array<{
-    Id?: string;
-    Name?: string;
-    Surname?: string
-    Height?: number;
-    Weigth?: number;
-    DateOfBirth?: string
-  }>;
-  setUpdateRows: Dispatch<
-    SetStateAction<
-      Array<{
-        Id?: string;
-        Name?: string;
-        Surname?: number;
-        Height?: number;
-        Weigth?: number;
-        DateOfBirth?: string
-      }>
-    >
-  >;
+  updateRows: persons;
+  setUpdateRows: Dispatch<SetStateAction<persons>>;
 };
 
 export const Context = createContext({} as ContextData);
