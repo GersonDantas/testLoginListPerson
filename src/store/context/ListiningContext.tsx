@@ -5,7 +5,7 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { persons } from "@myGlobaltypes/index";
+import { persons } from "src/types/index";
 
 type ContextData = {
   isVisibileModalCreate: boolean;

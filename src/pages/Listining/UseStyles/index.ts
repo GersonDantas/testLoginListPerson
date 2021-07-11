@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: theme.spacing(3),
+    marginTop: "10px",
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
@@ -29,6 +29,24 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
   },
+  containerButtons: {
+    height: 'fit-content',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  buttonsPage: {
+    display: 'flex',
+    backgroundColor: theme.palette.secondary.main
+  },
+  buttonsPageNone: {
+    display: 'none'
+  },
+  page: {
+    fontSize: "20px",
+    display: 'flex',
+    alignItems: 'center'
+  }
 }));
 
 export default useStyles;

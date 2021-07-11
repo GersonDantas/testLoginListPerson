@@ -13,7 +13,7 @@ import { Context } from "@store/context/ListiningContext";
 
 import styles from "./styles.module.scss";
 import Title from "../Title";
-import { IFormCreate } from "@myGlobaltypes/index";
+import { IFormCreate } from "src/types/index";
 
 const Modal: React.FC = () => {
   const { handleClose, isVisibileModalCreate } = useContext(Context);

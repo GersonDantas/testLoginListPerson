@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import Router from "next/router";
 
+//material-ui
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -15,55 +16,77 @@ import Fab from "@material-ui/core/Fab";
 import Container from "@material-ui/core/Container";
 import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
+import { IconButton } from "@material-ui/core";
+import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 
-import Copyright from "@globalComponents/Copyright";
+import Copyright from "@components/Copyright";
 import { Context } from "@store/context/ListiningContext";
-import TableRows from "./components/TableRows";
-import Header from "./components/Header";
-import Title from "./components/Title";
-import Modal from "./components/ModalCreate";
+import TableRows from "./componentsListining/TableRows";
+import Header from "./componentsListining/Header";
+import Title from "./componentsListining/Title";
+import Modal from "./componentsListining/ModalCreate";
 import useStyles from "./UseStyles";
 import { getApiClient } from "@services/api/serverSide";
-import { ListiningPersons } from "@services/persons";
-
+import { ListiningPersons } from "@services/api/persons";
+import UseTables from "src/hooks/useTables";
+import Pagination from "src/hooks/pagination";
 
 const Listining: React.FC = () => {
-  const { handleOpenCreate, handleOpenUpdate, setUpdateRows, updateRows} =
+  //global context
+  const { handleOpenCreate, handleOpenUpdate, setUpdateRows, updateRows } =
     useContext(Context);
   const [fullyear, setFulyear] = useState<number>();
-  const [refresh, setRefresh] = useState(false)
+  const [refresh, setRefresh] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [buttonsPage, setButtonsPage] = useState({});
+  const { tables, fetchTable } = UseTables(7, true);
+
+  const handlePage = (current: number) => {
+    current < 0
+      ? setCurrentPage(currentPage - 1)
+      : setCurrentPage(currentPage + 1);
+  };
 
   const handleRouteChange = () => {
-    setRefresh(!refresh)
-  }
+    let h = !refresh;
+    setRefresh(h);
+  };
 
-  Router.events.on('routeChangeStart', handleRouteChange)
-
+  Router.events.on("hashChangeStart", handleRouteChange);
 
   useEffect(() => {
     (async () => {
       try {
-        const persons = await ListiningPersons();
-        setUpdateRows(persons);
+        let cookies = parseCookies(undefined);
+        let cP = parseInt(cookies["Leadsoft.currentPage"]);
+        setCurrentPage(() => (cP > 1 ? cP : 1));
+        const buttons = await Pagination(7, currentPage);
+        setButtonsPage(buttons);
+        await fetchTable(currentPage);
       } catch (error) {
         alert("Erro no servidor: " + error.message);
       }
     })();
-    const y = new Date().getFullYear();
+    let y = new Date().getFullYear();
     setFulyear(y);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refresh]);
+  }, [refresh, currentPage]);
 
   const classes = useStyles();
   return (
     <>
       {<Modal />}
       <Header />
-      <Container maxWidth="lg" className={classes.container}>
+      <Container maxWidth="lg" classes={{ root: classes.container }}>
         <Grid container>
           <Grid item xs={12}>
-            <Paper className={classes.paper}>
-              <Grid container spacing={1} className={classes.containerPerson}>
+            <Paper classes={{ root: classes.paper }}>
+              <Grid
+                container
+                spacing={1}
+                classes={{ root: classes.containerPerson }}
+              >
                 <Grid item>
                   <Fab
                     color="secondary"
@@ -78,36 +101,70 @@ const Listining: React.FC = () => {
                 </Grid>
               </Grid>
               <Table size="small">
-                <TableHead className={classes.headTable}>
+                <TableHead classes={{ root: classes.headTable }}>
                   <TableRow>
-                    <TableCell className={classes.headTableCell}>
+                    <TableCell classes={{ root: classes.headTableCell }}>
                       Nome Completo
                     </TableCell>
-                    <TableCell className={classes.headTableCell}>
+                    <TableCell classes={{ root: classes.headTableCell }}>
                       Idade
                     </TableCell>
-                    <TableCell className={classes.headTableCell}>
+                    <TableCell classes={{ root: classes.headTableCell }}>
                       Altura
                     </TableCell>
-                    <TableCell className={classes.headTableCell}>
+                    <TableCell classes={{ root: classes.headTableCell }}>
                       Peso
                     </TableCell>
-                    <TableCell className={classes.headTableCell}>Imc</TableCell>
-                    <TableCell align="right" className={classes.headTableCell}>
+                    <TableCell classes={{ root: classes.headTableCell }}>
+                      Imc
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      classes={{ root: classes.headTableCell }}
+                    >
                       editar
                     </TableCell>
-                    <TableCell align="right" className={classes.headTableCell}>
+                    <TableCell
+                      align="right"
+                      classes={{ root: classes.headTableCell }}
+                    >
                       excluir
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRows 
-                    persons={updateRows}
-                    fullyear={fullyear}
-                  />
+                  <TableRows persons={tables} fullyear={fullyear} />
                 </TableBody>
               </Table>
+              <Grid container classes={{ root: classes.containerButtons }}>
+                <Grid
+                  item
+                  className={
+                    buttonsPage.buttonLeft
+                      ? classes.buttonsPage
+                      : classes.buttonsPageNone
+                  }
+                >
+                  <IconButton onClick={() => handlePage(-1)}>
+                    <KeyboardArrowLeftIcon color="primary" />
+                  </IconButton>
+                </Grid>
+                <Grid item classes={{ root: classes.page }}>
+                  página: {currentPage}
+                </Grid>
+                <Grid
+                  item
+                  className={
+                    buttonsPage.buttonRight
+                      ? classes.buttonsPage
+                      : classes.buttonsPageNone
+                  }
+                >
+                  <IconButton onClick={() => handlePage(1)}>
+                    <KeyboardArrowRightIcon color="primary" />
+                  </IconButton>
+                </Grid>
+              </Grid>
               <Box mt={8}>
                 <Copyright />
               </Box>
@@ -115,7 +172,6 @@ const Listining: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
-      <Link href="Login">login</Link>
     </>
   );
 };
@@ -125,9 +181,8 @@ export default Listining;
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
 
-  const apiClient = getApiClient(ctx);
+  const token = cookies["Leadsoft.Authorization"];
 
-  const token = cookies["Leadsoft.UserInformation"];
   if (!token) {
     return {
       redirect: {

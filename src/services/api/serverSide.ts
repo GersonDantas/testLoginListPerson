@@ -9,7 +9,7 @@ export function getApiClient(ctx?: any) {
     baseURL: "http://leadsoft.ddns.com.br:18355",
   });
 
-  const token = cookies["Leadsoft.UserInformation"]
+  const token = cookies["Leadsoft.Authorization"]
 
   if (token) {
     api.defaults.headers["Authorization"] = token

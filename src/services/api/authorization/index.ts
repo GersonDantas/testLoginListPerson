@@ -3,7 +3,7 @@ import { destroyCookie } from "nookies"
 
 
 export const Logout = () => {
-    destroyCookie(null, 'Leadsoft.UserInformation')
+    destroyCookie(null, 'Leadsoft.Authorization')
     Router.push("/")
 }
 

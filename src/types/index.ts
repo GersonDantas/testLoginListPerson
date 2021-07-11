@@ -1,12 +1,15 @@
+//My types
 
-export type persons = Array<{
+export type iunicPerson = {
   Id?: string;
   Name?: string;
   Surname?: string;
   Height?: number;
   Weigth?: number;
   DateOfBirth?: string;
-}>;
+};
+
+export type persons = Array<iunicPerson>;
 
 export type SignInData = {
   username: string;
@@ -14,9 +17,9 @@ export type SignInData = {
 };
 
 export type IFormCreate = {
-  name: string
-  surname: string
-  DateOfBirth: Date
-  height: number
-  weight: number
-}
+  name: string;
+  surname: string;
+  DateOfBirth: Date;
+  height: number;
+  weight: number;
+};

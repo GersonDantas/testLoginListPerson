@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import useStyles from "./UseStyles";
 import Image from "next/image";
 import { Grid } from "@material-ui/core";
-import { Logout } from "@services/authorization";
+import { Logout } from "@services/api/authorization";
 
 const Header: React.FC = () => {
   const classes = useStyles();

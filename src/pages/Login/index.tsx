@@ -1,5 +1,10 @@
+//Absolutes imports
 import React, { useState, useEffect ,useContext} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+
+import Image from "next/image";
+import LinkN from "next/link";
+import router, { useRouter } from "next/router";
 
 //imports material-ui
 import Avatar from "@material-ui/core/Avatar";
@@ -12,16 +17,13 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import Copyright from "@globalComponents/Copyright";
 
-import Image from "next/image";
-import LinkN from "next/link";
-import router, { useRouter } from "next/router";
-
+//Relatives imports
+import Copyright from "@components/Copyright";
 import useStyles from "./UseStyles";
-import { handleLogin } from "@services/authentication";
+import { handleLogin } from "@services/api/authentication";
 import { AuthContext} from "@store/context/AuthContext";
-import { SignInData } from "@myGlobaltypes/index";
+import { SignInData } from "src/types/index";
 
 const Login: React.FC = () => {
   const {signIn} =  useContext(AuthContext)
