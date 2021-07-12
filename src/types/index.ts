@@ -23,3 +23,8 @@ export type IFormCreate = {
   height: number;
   weight: number;
 };
+
+export type buttonsPage = {
+  buttonRight: boolean
+  buttonLeft: boolean
+}

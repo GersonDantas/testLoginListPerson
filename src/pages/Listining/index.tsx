@@ -30,17 +30,15 @@ import useStyles from "./UseStyles";
 import { getApiClient } from "@services/api/serverSide";
 import { ListiningPersons } from "@services/api/persons";
 import UseTables from "src/hooks/useTables";
-import Pagination from "src/hooks/pagination";
+import { buttonsPage } from "src/types";
 
 const Listining: React.FC = () => {
   //global context
-  const { handleOpenCreate, handleOpenUpdate, setUpdateRows, updateRows } =
-    useContext(Context);
+  const { handleOpenCreate } = useContext(Context);
   const [fullyear, setFulyear] = useState<number>();
   const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [buttonsPage, setButtonsPage] = useState({});
-  const { tables, fetchTable } = UseTables(7, true);
+  const { tables, fetchTable, smaller, pages, pagination } = UseTables(7, true);
 
   const handlePage = (current: number) => {
     current < 0
@@ -55,14 +53,26 @@ const Listining: React.FC = () => {
 
   Router.events.on("hashChangeStart", handleRouteChange);
 
+  //monitor currentPages
+  useEffect(() => {
+    (async () => {
+      try {
+        fetchTable(currentPage);
+        pagination();
+      } catch (error) {
+        alert("Page error: " + error.message);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
   useEffect(() => {
     (async () => {
       try {
         let cookies = parseCookies(undefined);
         let cP = parseInt(cookies["Leadsoft.currentPage"]);
-        setCurrentPage(() => (cP > 1 ? cP : 1));
-        const buttons = await Pagination(7, currentPage);
-        setButtonsPage(buttons);
+        setCurrentPage(cP);
+        pagination();
         await fetchTable(currentPage);
       } catch (error) {
         alert("Erro no servidor: " + error.message);
@@ -71,7 +81,7 @@ const Listining: React.FC = () => {
     let y = new Date().getFullYear();
     setFulyear(y);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refresh, currentPage]);
+  }, [refresh]);
 
   const classes = useStyles();
   return (
@@ -137,33 +147,23 @@ const Listining: React.FC = () => {
                 </TableBody>
               </Table>
               <Grid container classes={{ root: classes.containerButtons }}>
-                <Grid
-                  item
-                  className={
-                    buttonsPage.buttonLeft
-                      ? classes.buttonsPage
-                      : classes.buttonsPageNone
-                  }
-                >
-                  <IconButton onClick={() => handlePage(-1)}>
-                    <KeyboardArrowLeftIcon color="primary" />
-                  </IconButton>
-                </Grid>
+                {currentPage == 1 || smaller ? null : (
+                  <Grid item className={classes.buttonsPage}>
+                    <IconButton onClick={() => handlePage(-1)}>
+                      <KeyboardArrowLeftIcon color="primary" />
+                    </IconButton>
+                  </Grid>
+                )}
                 <Grid item classes={{ root: classes.page }}>
                   página: {currentPage}
                 </Grid>
-                <Grid
-                  item
-                  className={
-                    buttonsPage.buttonRight
-                      ? classes.buttonsPage
-                      : classes.buttonsPageNone
-                  }
-                >
-                  <IconButton onClick={() => handlePage(1)}>
-                    <KeyboardArrowRightIcon color="primary" />
-                  </IconButton>
-                </Grid>
+                {currentPage == pages || smaller ? null : (
+                  <Grid item className={classes.buttonsPage}>
+                    <IconButton onClick={() => handlePage(1)}>
+                      <KeyboardArrowRightIcon color="primary" />
+                    </IconButton>
+                  </Grid>
+                )}
               </Grid>
               <Box mt={8}>
                 <Copyright />

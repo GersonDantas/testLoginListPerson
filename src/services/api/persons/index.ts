@@ -4,6 +4,17 @@ import { api } from "@services/api/clientSide";
  *gets and head
  */
 
+//Listining all persons
+export async function ListiningAllPersons() {
+  const resp = await api
+    .get(
+      `/api/v1/People`
+    )
+    .then((res) => res.data)
+    .catch((e) => alert(`Erro na requisiçao ao servidor: ${e.message}`));
+  return resp;
+}
+
 //Listining all persons, with or without pagination
 export async function ListiningPersons(
   currentPage: number,

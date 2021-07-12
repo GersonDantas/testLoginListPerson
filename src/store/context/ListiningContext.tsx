@@ -13,8 +13,6 @@ type ContextData = {
   handleOpenUpdate: () => void;
   isVisibileModalUpdate: boolean;
   handleClose: () => void;
-  updateRows: persons;
-  setUpdateRows: Dispatch<SetStateAction<persons>>;
 };
 
 export const Context = createContext({} as ContextData);
@@ -26,7 +24,6 @@ export type ContextProvider = {
 export function ListiningContextProvider({ children }: ContextProvider) {
   const [isVisibileModalCreate, setIsvisibleModalCreate] = useState(false);
   const [isVisibileModalUpdate, setIsvisibleModalUpdate] = useState(false);
-  const [updateRows, setUpdateRows] = useState([{}]);
 
   const handleOpenCreate = () => {
     setIsvisibleModalCreate(true);
@@ -47,8 +44,6 @@ export function ListiningContextProvider({ children }: ContextProvider) {
         handleOpenCreate,
         isVisibileModalUpdate,
         handleOpenUpdate,
-        updateRows,
-        setUpdateRows,
       }}
     >
       {children}

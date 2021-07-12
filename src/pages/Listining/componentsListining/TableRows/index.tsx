@@ -19,12 +19,12 @@ interface Props {
 }
 
 const TableRows: React.FC<Props> = ({ persons, fullyear }) => {
-  const { handleOpenUpdate, updateRows, setUpdateRows } = useContext(Context);
+  const { handleOpenUpdate } = useContext(Context);
   const classes = useStyles();
   return (
     <>
       {!!persons.length ? (
-        persons?.map((row) => (
+        persons.map((row) => (
           <>
             <ModalUpdate />
             <TableRow key={row.Id}>
