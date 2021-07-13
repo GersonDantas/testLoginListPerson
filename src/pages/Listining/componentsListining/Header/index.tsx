@@ -16,12 +16,12 @@ const Header: React.FC = () => {
       <Toolbar>
         <Grid container>
           <Grid item xs={2} className={classes.logoContainer}>
-              <Image
-                src="/img7.png"
-                layout="fill"
-                alt="logo"
-                className={classes.logo}
-              />
+            <Image
+              src="/img7.png"
+              layout="fill"
+              alt="logo"
+              className={classes.logo}
+            />
           </Grid>
         </Grid>
         <Button onClick={() => Logout()}>

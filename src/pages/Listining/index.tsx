@@ -1,7 +1,9 @@
-import React, { MouseEvent, useContext, useEffect, useState } from "react";
-import Link from "next/link";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useState } from "react";
+
 import { parseCookies, setCookie } from "nookies";
+
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Router from "next/router";
 
 //material-ui
@@ -37,17 +39,19 @@ function Listining({
   const sizePage = 7;
 
   //global context
-  const { handleOpenCreate, currentPage, setCurrentPage} = useContext(Context);
+  const { handleOpenCreate, currentPage, setCurrentPage } = useContext(Context);
 
-  const [fullyear, setFulyear] = useState<number>();
+  const [fullyear, setFulyear] = useState<number>(); //get current year
   const [refresh, setRefresh] = useState(false);
   const [out, setOut] = useState(false);
   const [arrayPersons, setArrayPersons] = useState<Array<Array<iunicPerson>>>(
     []
   );
 
+  //personal hook
   const { pages, smaller, pagination } = Pagination(sizePage, allPersonsTable);
 
+  //when to change page
   const handlePage = (current: number) => {
     current < 0
       ? setCurrentPage(currentPage - 1)
@@ -58,39 +62,37 @@ function Listining({
     let h = !refresh;
     setRefresh(h);
   };
-  
+
   const routerChangeStart = () => {
     let r = !out;
     setOut(r);
   };
-  
-  
-  Router.events.on("hashChangeStart", handleRouteChange);
-  Router.events.on("hashChangeComplete", handleRouteChange);
+
+  Router.events.on("hashChangeStart", handleRouteChange); //get start of changing files
+  Router.events.on("routeChangeStart", routerChangeStart);
+
   useEffect(() => {
-    (async () => {
-      try {
-        let cookies = parseCookies(undefined);
-        let cP = parseInt(cookies["Leadsoft.currentPage"]);
-        setCurrentPage(cP);
-        pagination();
-      } catch (error) {
-        alert("Erro no servidor: " + error.message);
-      }
-    })();
+    //get the page when the user left
+    let cookies = parseCookies(undefined);
+    let cP = parseInt(cookies["Leadsoft.currentPage"]);
+    setCurrentPage(cP);
+
+    pagination();
+
+    //get the current year
     let y = new Date().getFullYear();
     setFulyear(y);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [refresh]);
-  
-  Router.events.on("routeChangeStart", routerChangeStart);
+
   useEffect(() => {
     setCookie(undefined, "Leadsoft.currentPage", `${currentPage}`, {
-      expires: new Date( new Date().getFullYear() + 50, 1, 1  )
-    })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [out, refresh])
+      expires: new Date(new Date().getFullYear() + 50, 1, 1),
+    });
+  }, [out, refresh]);
 
+  //takes the complete Array and 
+  //transforms it into an Array of Arrays
   useEffect(() => {
     (() => {
       let tempArray2: Array<Array<iunicPerson>> = [];
@@ -118,8 +120,6 @@ function Listining({
       setArrayPersons(tempArray2);
     })();
   }, []);
-
-  // console.log(arrayPersons);
 
   const classes = useStyles();
   return (
@@ -223,10 +223,11 @@ export default Listining;
 //server side
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  //takes the cookies passing the context as a
+  //parameter, saying it is the server side
   const cookies = parseCookies(ctx);
 
   const token = cookies["Leadsoft.Authorization"];
-  const currentPage = cookies["Leadsoft.currentPage"];
 
   const api = getApiClient(ctx);
 
