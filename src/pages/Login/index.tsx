@@ -1,5 +1,5 @@
 //Absolutes imports
-import React, { useState, useEffect ,useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Image from "next/image";
@@ -21,13 +21,14 @@ import Button from "@material-ui/core/Button";
 import Copyright from "@components/Copyright";
 import useStyles from "./UseStyles";
 import { handleLogin } from "@services/api/authentication";
-import { AuthContext} from "@store/context/AuthContext";
+import { AuthContext } from "@store/context/AuthContext";
 import { SignInData } from "src/types/index";
+import IsLoading from "@components/isLoading";
 
 const Login: React.FC = () => {
-  const {signIn} =  useContext(AuthContext)
+  const { signIn, isLoading, setIsloading } = useContext(AuthContext);
   const [err, setErr] = useState("");
-  
+
   const {
     register,
     handleSubmit,
@@ -35,16 +36,17 @@ const Login: React.FC = () => {
     clearErrors,
     formState: { errors },
   } = useForm<SignInData>();
-  
-  
+
   async function handleSignIn(data: SignInData) {
     try {
-      await signIn(data)
+      setIsloading(true)
+      await signIn(data);
     } catch (err) {
+      setIsloading(false)
       setErr("Dados inválidos, verifique suas informações");
     }
-  };
-  
+  }
+
   //see password
   const seePassword = () => {
     const pass: any = document.getElementById("password");
@@ -54,8 +56,9 @@ const Login: React.FC = () => {
       pass.type = "password";
     }
   };
-  
+
   useEffect(() => {
+    setIsloading(false)
     reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [err]);
@@ -63,78 +66,87 @@ const Login: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      className={classes.backgroundContainer}
-    >
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <Image src="/img8.png" width="25" height="25" alt="logo" />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Login
-        </Typography>
-        <form onSubmit={handleSubmit(handleSignIn)} className={classes.form}>
-          <TextField
-            color="primary"
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="email"
-            label="Email Address"
-            {...register("username")}
-            autoComplete="email"
-            autoFocus
-            onClick={() => setErr("")}
-          />
-          <p className={classes.error}>{errors.username?.message}</p>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="password"
-            label="Password"
-            {...register("password")}
-            autoComplete="current-password"
-            type="password"
-            onClick={() => setErr("")}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox value="see" onClick={seePassword} color="primary" />
-            }
-            label="Mostrar senha"
-          />
-          <p className={classes.error}>{errors.password?.message}</p>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="default"
-            className={classes.submit}
-          >
-            Login
-          </Button>
-          {!!err && <p className={classes.error}>{err}</p>}
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" className={classes.fake} variant="body2">
-                esqueceu sua senha?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" className={classes.fake} variant="body2">
-                {"não tem conta?"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+    <>
+      {isLoading ? (
+        <IsLoading />
+      ) : (
+        <Container
+          component="main"
+          maxWidth="xs"
+          className={classes.backgroundContainer}
+        >
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <Image src="/img8.png" width="25" height="25" alt="logo" />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Login
+            </Typography>
+            <form
+              onSubmit={handleSubmit(handleSignIn)}
+              className={classes.form}
+            >
+              <TextField
+                color="primary"
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="email"
+                label="Email Address"
+                {...register("username")}
+                autoComplete="email"
+                autoFocus
+                onClick={() => setErr("")}
+              />
+              <p className={classes.error}>{errors.username?.message}</p>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="password"
+                label="Password"
+                {...register("password")}
+                autoComplete="current-password"
+                type="password"
+                onClick={() => setErr("")}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox value="see" onClick={seePassword} color="primary" />
+                }
+                label="Mostrar senha"
+              />
+              <p className={classes.error}>{errors.password?.message}</p>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="default"
+                className={classes.submit}
+              >
+                Login
+              </Button>
+              {!!err && <p className={classes.error}>{err}</p>}
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" className={classes.fake} variant="body2">
+                    esqueceu sua senha?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="#" className={classes.fake} variant="body2">
+                    {"não tem conta?"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+          </div>
+          <Box mt={8}>
+            <Copyright />
+          </Box>
+        </Container>
+      )}
+    </>
   );
 };
 

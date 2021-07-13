@@ -12,12 +12,8 @@ export default function Pagination(sizePage: number, allPersonsTable: persons) {
       setSmaller(false);
     }
 
-    const c = Math.floor(allPersonsTable.length / sizePage);
-    if (allPersonsTable.length / sizePage == c) {
-      setPages(c - 1);
-    } else {
-      setPages(c);
-    }
+    const p = Math.floor(allPersonsTable.length / sizePage);
+    setPages(p - 1)
   }
 
   return {

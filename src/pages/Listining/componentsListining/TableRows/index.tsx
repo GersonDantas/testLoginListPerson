@@ -28,22 +28,22 @@ const TableRows: React.FC<Props> = ({ persons, fullyear, currentPage }) => {
         persons[currentPage].map((row) => (
           <>
             <ModalUpdate />
-            <TableRow key={row.Id}>
-              <TableCell>{`${row.Name} ${row.Surname}`}</TableCell>
+            <TableRow key={row?.Id}>
+              <TableCell>{`${row?.Name} ${row?.Surname}`}</TableCell>
               <TableCell>
                 {`${
                   fullyear
                     ? fullyear -
-                      parseInt(`${row.DateOfBirth?.substring(0, 4)}`, 10)
+                      parseInt(`${row?.DateOfBirth?.substring(0, 4)}`, 10)
                     : "indisponível"
                 } Anos
                 `}
               </TableCell>
-              <TableCell>{`${row.Height?.toFixed(2)} mt`}</TableCell>
-              <TableCell>{`${row.Weigth} Kg`}</TableCell>
+              <TableCell>{`${row?.Height?.toFixed(2)} mt`}</TableCell>
+              <TableCell>{`${row?.Weigth} Kg`}</TableCell>
               <TableCell>
-                {row.Weigth && row.Height
-                  ? `${row.Weigth / (row.Height * row.Height)}`.substring(0, 5)
+                {row?.Weigth && row?.Height
+                  ? `${row?.Weigth / (row?.Height * row?.Height)}`.substring(0, 5)
                   : NaN}
               </TableCell>
               <TableCell align="right" classes={{ root: classes.buttons }}>

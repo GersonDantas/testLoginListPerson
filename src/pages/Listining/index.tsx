@@ -101,8 +101,8 @@ function Listining({
         let tempArray: iunicPerson[] = [];
         for (let j = i; j <= i + sizePage; j++) {
           //test  if the next is undefined
-          if (allPersonsTable[j + 1] == undefined) {
-            tempArray.push(allPersonsTable[j]);
+          if (allPersonsTable[j + 2] === undefined) {
+            tempArray.push(allPersonsTable[j + 2]);
             tempArray2.push(tempArray);
             i = j + 1;
             break;
