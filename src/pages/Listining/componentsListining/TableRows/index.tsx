@@ -14,17 +14,18 @@ import { persons } from "src/types/index";
 import { Grid } from "@material-ui/core";
 
 interface Props {
-  persons: persons;
+  persons: persons[];
   fullyear?: number;
+  currentPage: number
 }
 
-const TableRows: React.FC<Props> = ({ persons, fullyear }) => {
+const TableRows: React.FC<Props> = ({ persons, fullyear, currentPage }) => {
   const { handleOpenUpdate } = useContext(Context);
   const classes = useStyles();
   return (
     <>
-      {!!persons.length ? (
-        persons.map((row) => (
+      {persons[currentPage] !== undefined ? (
+        persons[currentPage].map((row) => (
           <>
             <ModalUpdate />
             <TableRow key={row.Id}>

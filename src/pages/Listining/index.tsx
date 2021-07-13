@@ -1,6 +1,6 @@
 import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { parseCookies } from "nookies";
 import Router from "next/router";
 
@@ -28,17 +28,23 @@ import Title from "./componentsListining/Title";
 import Modal from "./componentsListining/ModalCreate";
 import useStyles from "./UseStyles";
 import { getApiClient } from "@services/api/serverSide";
-import { ListiningPersons } from "@services/api/persons";
-import UseTables from "src/hooks/useTables";
-import { buttonsPage } from "src/types";
+import Pagination from "src/hooks/pagination";
+import { iunicPerson } from "src/types/";
 
-const Listining: React.FC = () => {
+function Listining({
+  allPersonsTable,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const sizePage = 7;
+
   //global context
   const { handleOpenCreate } = useContext(Context);
+
   const [fullyear, setFulyear] = useState<number>();
   const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const { tables, fetchTable, smaller, pages, pagination } = UseTables(7, true);
+  const [arrayPersons, setArrayPersons] = useState<iunicPerson[][]>([]);
+
+  const { pages, smaller, pagination } = Pagination(sizePage, allPersonsTable);
 
   const handlePage = (current: number) => {
     current < 0
@@ -52,19 +58,7 @@ const Listining: React.FC = () => {
   };
 
   Router.events.on("hashChangeStart", handleRouteChange);
-
-  //monitor currentPages
-  useEffect(() => {
-    (async () => {
-      try {
-        fetchTable(currentPage);
-        pagination();
-      } catch (error) {
-        alert("Page error: " + error.message);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  Router.events.on("hashChangeComplete", handleRouteChange);
 
   useEffect(() => {
     (async () => {
@@ -72,8 +66,8 @@ const Listining: React.FC = () => {
         let cookies = parseCookies(undefined);
         let cP = parseInt(cookies["Leadsoft.currentPage"]);
         setCurrentPage(cP);
-        pagination();
-        await fetchTable(currentPage);
+        // await fetchTable(currentPage);
+        pagination(currentPage);
       } catch (error) {
         alert("Erro no servidor: " + error.message);
       }
@@ -82,6 +76,35 @@ const Listining: React.FC = () => {
     setFulyear(y);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
+  
+  
+  useEffect(() => {
+    (async () => {
+      for (let i = 0; i < allPersonsTable.length - 1; i++) {
+        let tempArray: iunicPerson[] = [];
+        for (let j = i; j <= i + sizePage; j++) {
+          if (allPersonsTable[j + 1] == undefined) {
+            tempArray.push(allPersonsTable[j]);
+            setArrayPersons([...arrayPersons, tempArray]);
+            i = j + 1;
+            console.log("Jesus abençoa")
+            break;
+          }
+          if (j + 1 == i + sizePage) {
+            i = j;
+            tempArray.push(allPersonsTable[j]);
+            setArrayPersons([...arrayPersons, tempArray]);
+            console.log("Maria pede")
+            break;
+          }
+          console.log("Romero pede")
+          tempArray.push(allPersonsTable[j]);
+        }
+      }
+    })()
+  }, [])
+  
+  console.log(arrayPersons)
 
   const classes = useStyles();
   return (
@@ -143,7 +166,11 @@ const Listining: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRows persons={tables} fullyear={fullyear} />
+                  <TableRows
+                    persons={arrayPersons}
+                    fullyear={fullyear}
+                    currentPage={currentPage}
+                  />
                 </TableBody>
               </Table>
               <Grid container classes={{ root: classes.containerButtons }}>
@@ -174,14 +201,19 @@ const Listining: React.FC = () => {
       </Container>
     </>
   );
-};
+}
 
 export default Listining;
+
+//server side
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
 
   const token = cookies["Leadsoft.Authorization"];
+  const currentPage = cookies["Leadsoft.currentPage"];
+
+  const api = getApiClient(ctx);
 
   if (!token) {
     return {
@@ -192,7 +224,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
+  const allPersonsTable = await api
+    .get(`/api/v1/People`)
+    .then((res) => res.data)
+    .catch((e) => alert(`Erro na requisiçao ao servidor: ${e.message}`));
+
   return {
-    props: {},
+    props: {
+      allPersonsTable,
+    },
   };
 };

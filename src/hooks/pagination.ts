@@ -1,61 +1,29 @@
-import { ListiningPersons } from "@services/api/persons";
-import { setCookie } from "nookies";
+import {  useEffect, useState } from "react";
+import { persons} from "src/types";
 
+export default function Pagination(sizePage: number, allPersonsTable: persons) {
+  const [pages, setPages] = useState<number>();
+  const [smaller, setSmaller] = useState<boolean>();
+  
+  async function pagination(currentPage: number) {
+    if (allPersonsTable.length < sizePage) {
+      setSmaller(true);
+    } else {
+      setSmaller(false);
+    }
+    
+    const c = Math.floor(allPersonsTable.length / sizePage);
+    if (allPersonsTable.length / sizePage > c) {
+      setPages(c + 1);
+    } else {
+      setPages(c);
+    }
+  }
+  
 
-export default async function Pagination(
-  sizePage: number,
-  currentPage: number,) {
-  const allCurrentArray = await ListiningPersons(currentPage, sizePage, true);
-
-
-
-  const c = Math.floor(allCurrentArray / sizePage)
-
-  // let buttonRight;
-  // let buttonLeft;
-  // //current page init in One
-  // if (currentPage === 1) {
-  //   if (sizeCurrentArray.length === sizePage && nextPage.length !== 0) {
-  //     buttonRight = true;
-  //     buttonLeft = false;
-  //     setCookie(undefined, "Leadsoft.currentPage", currentPage.toString(), {
-  //       expires: new Date(new Date().getFullYear() + 50, 1, 1),
-  //     });
-  //     return {
-  //       buttonLeft,
-  //       buttonRight,
-  //     };
-  //   }
-  //   buttonRight = false;
-  //   buttonLeft = false;
-  //   setCookie(undefined, "Leadsoft.currentPage", currentPage.toString(), {
-  //     expires: new Date(new Date().getFullYear() + 50, 1, 1),
-  //   });
-  //   return {
-  //     buttonLeft,
-  //     buttonRight,
-  //   };
-  // }
-  // if (currentPage > 1) {
-  //   if (sizeCurrentArray === sizePage && nextPage.length !== 0) {
-  //     buttonRight = false;
-  //     buttonLeft = true;
-  //     setCookie(undefined, "Leadsoft.currentPage", currentPage.toString(), {
-  //       expires: new Date(new Date().getFullYear() + 50, 1, 1),
-  //     });
-  //     return {
-  //       buttonLeft,
-  //       buttonRight,
-  //     };
-  //   }
-  //   buttonRight = false;
-  //   buttonLeft = false;
-  //   setCookie(undefined, "Leadsoft.currentPage", currentPage.toString(), {
-  //     expires: new Date(new Date().getFullYear() + 50, 1, 1),
-  //   });
-  //   return {
-  //     buttonLeft,
-  //     buttonRight,
-  //   };
-  // }
+  return {
+    pages,
+    smaller,
+    pagination,
+  };
 }
