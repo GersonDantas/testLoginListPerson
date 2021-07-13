@@ -39,7 +39,7 @@ export function AuthProvider({ children }: ContextProvider) {
     setCookie(
       undefined,
       "Leadsoft.currentPage",
-      `${cP > 1 ? cP : 1}`, //if currentPage exist
+      `${cP > 0 ? cP : 0}`, //if currentPage exist
       {
         expires: new Date( new Date().getFullYear() + 50, 1, 1  )
       }

@@ -3,7 +3,6 @@ import React, { useState, useEffect ,useContext} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Image from "next/image";
-import LinkN from "next/link";
 import router, { useRouter } from "next/router";
 
 //imports material-ui
@@ -135,7 +134,6 @@ const Login: React.FC = () => {
       <Box mt={8}>
         <Copyright />
       </Box>
-      <LinkN href="Listining">listining</LinkN>
     </Container>
   );
 };

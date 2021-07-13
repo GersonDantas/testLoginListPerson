@@ -1,7 +1,7 @@
 import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { parseCookies } from "nookies";
+import { parseCookies, setCookie } from "nookies";
 import Router from "next/router";
 
 //material-ui
@@ -29,7 +29,7 @@ import Modal from "./componentsListining/ModalCreate";
 import useStyles from "./UseStyles";
 import { getApiClient } from "@services/api/serverSide";
 import Pagination from "src/hooks/pagination";
-import { iunicPerson } from "src/types/";
+import { iunicPerson, persons } from "src/types/";
 
 function Listining({
   allPersonsTable,
@@ -37,12 +37,14 @@ function Listining({
   const sizePage = 7;
 
   //global context
-  const { handleOpenCreate } = useContext(Context);
+  const { handleOpenCreate, currentPage, setCurrentPage} = useContext(Context);
 
   const [fullyear, setFulyear] = useState<number>();
   const [refresh, setRefresh] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [arrayPersons, setArrayPersons] = useState<iunicPerson[][]>([]);
+  const [out, setOut] = useState(false);
+  const [arrayPersons, setArrayPersons] = useState<Array<Array<iunicPerson>>>(
+    []
+  );
 
   const { pages, smaller, pagination } = Pagination(sizePage, allPersonsTable);
 
@@ -56,18 +58,22 @@ function Listining({
     let h = !refresh;
     setRefresh(h);
   };
-
+  
+  const routerChangeStart = () => {
+    let r = !out;
+    setOut(r);
+  };
+  
+  
   Router.events.on("hashChangeStart", handleRouteChange);
   Router.events.on("hashChangeComplete", handleRouteChange);
-
   useEffect(() => {
     (async () => {
       try {
         let cookies = parseCookies(undefined);
         let cP = parseInt(cookies["Leadsoft.currentPage"]);
         setCurrentPage(cP);
-        // await fetchTable(currentPage);
-        pagination(currentPage);
+        pagination();
       } catch (error) {
         alert("Erro no servidor: " + error.message);
       }
@@ -77,34 +83,43 @@ function Listining({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
   
-  
+  Router.events.on("routeChangeStart", routerChangeStart);
   useEffect(() => {
-    (async () => {
+    setCookie(undefined, "Leadsoft.currentPage", `${currentPage}`, {
+      expires: new Date( new Date().getFullYear() + 50, 1, 1  )
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [out, refresh])
+
+  useEffect(() => {
+    (() => {
+      let tempArray2: Array<Array<iunicPerson>> = [];
       for (let i = 0; i < allPersonsTable.length - 1; i++) {
+        //temporary Array
         let tempArray: iunicPerson[] = [];
         for (let j = i; j <= i + sizePage; j++) {
+          //test  if the next is undefined
           if (allPersonsTable[j + 1] == undefined) {
             tempArray.push(allPersonsTable[j]);
-            setArrayPersons([...arrayPersons, tempArray]);
+            tempArray2.push(tempArray);
             i = j + 1;
-            console.log("Jesus abençoa")
             break;
           }
+          //test if the next is the last of this loop
           if (j + 1 == i + sizePage) {
             i = j;
             tempArray.push(allPersonsTable[j]);
-            setArrayPersons([...arrayPersons, tempArray]);
-            console.log("Maria pede")
+            tempArray2.push(tempArray);
             break;
           }
-          console.log("Romero pede")
           tempArray.push(allPersonsTable[j]);
         }
       }
-    })()
-  }, [])
-  
-  console.log(arrayPersons)
+      setArrayPersons(tempArray2);
+    })();
+  }, []);
+
+  // console.log(arrayPersons);
 
   const classes = useStyles();
   return (
@@ -174,18 +189,18 @@ function Listining({
                 </TableBody>
               </Table>
               <Grid container classes={{ root: classes.containerButtons }}>
-                {currentPage == 1 || smaller ? null : (
-                  <Grid item className={classes.buttonsPage}>
+                {currentPage == 0 || smaller ? null : (
+                  <Grid item className={classes.buttonsPageLeft}>
                     <IconButton onClick={() => handlePage(-1)}>
                       <KeyboardArrowLeftIcon color="primary" />
                     </IconButton>
                   </Grid>
                 )}
                 <Grid item classes={{ root: classes.page }}>
-                  página: {currentPage}
+                  página: {currentPage + 1}
                 </Grid>
                 {currentPage == pages || smaller ? null : (
-                  <Grid item className={classes.buttonsPage}>
+                  <Grid item className={classes.buttonsPageRight}>
                     <IconButton onClick={() => handlePage(1)}>
                       <KeyboardArrowRightIcon color="primary" />
                     </IconButton>

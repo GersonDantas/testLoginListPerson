@@ -13,6 +13,8 @@ type ContextData = {
   handleOpenUpdate: () => void;
   isVisibileModalUpdate: boolean;
   handleClose: () => void;
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
 };
 
 export const Context = createContext({} as ContextData);
@@ -24,6 +26,7 @@ export type ContextProvider = {
 export function ListiningContextProvider({ children }: ContextProvider) {
   const [isVisibileModalCreate, setIsvisibleModalCreate] = useState(false);
   const [isVisibileModalUpdate, setIsvisibleModalUpdate] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleOpenCreate = () => {
     setIsvisibleModalCreate(true);
@@ -44,6 +47,8 @@ export function ListiningContextProvider({ children }: ContextProvider) {
         handleOpenCreate,
         isVisibileModalUpdate,
         handleOpenUpdate,
+        currentPage,
+        setCurrentPage,
       }}
     >
       {children}

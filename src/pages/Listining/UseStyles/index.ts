@@ -30,22 +30,32 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   containerButtons: {
-    height: 'fit-content',
+    position: 'relative',
+    height: 'auto',
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
   },
-  buttonsPage: {
+  buttonsPageRight: {
+    position: 'absolute',
+    right: '0%',
     display: 'flex',
+    borderRadius: '50%',
     backgroundColor: theme.palette.secondary.main
   },
-  buttonsPageNone: {
-    display: 'none'
+  buttonsPageLeft: {
+    position: 'absolute',
+    left: '0%',
+    display: 'flex',
+    borderRadius: '50%',
+    backgroundColor: theme.palette.secondary.main
   },
   page: {
+    position: 'absolute',
+    left: '50%',
+    top: '0%',
+    transform: 'translate(-50%, 0%)',
     fontSize: "20px",
-    display: 'flex',
-    alignItems: 'center'
   }
 }));
 
