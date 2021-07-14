@@ -23,7 +23,6 @@ import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 
 import Copyright from "@components/Copyright";
-import { Context } from "@store/context/ListiningContext";
 import TableRows from "./componentsListining/TableRows";
 import Header from "./componentsListining/Header";
 import Title from "./componentsListining/Title";
@@ -31,7 +30,10 @@ import Modal from "./componentsListining/ModalCreate";
 import useStyles from "./UseStyles";
 import { getApiClient } from "@services/api/serverSide";
 import Pagination from "src/hooks/pagination";
-import { iunicPerson, persons } from "src/types/";
+import { iunicPerson } from "src/types/";
+import { Context } from "@store/context/ListiningContext";
+import { AuthContext } from "@store/context/AuthContext";
+import IsLoading from "@components/IsLoading";
 
 function Listining({
   allPersonsTable,
@@ -40,6 +42,7 @@ function Listining({
 
   //global context
   const { handleOpenCreate, currentPage, setCurrentPage } = useContext(Context);
+  const { isLoading } = useContext(AuthContext);
 
   const [fullyear, setFulyear] = useState<number>(); //get current year
   const [refresh, setRefresh] = useState(false);
@@ -56,6 +59,12 @@ function Listining({
     current < 0
       ? setCurrentPage(currentPage - 1)
       : setCurrentPage(currentPage + 1);
+  };
+
+  const setCookieCurrent = () => {
+    setCookie(undefined, "Leadsoft.currentPage", `${currentPage}`, {
+      expires: new Date(new Date().getFullYear() + 50, 1, 1),
+    });
   };
 
   const handleRouteChange = () => {
@@ -82,16 +91,17 @@ function Listining({
     //get the current year
     let y = new Date().getFullYear();
     setFulyear(y);
-    
   }, [refresh]);
 
   useEffect(() => {
-    setCookie(undefined, "Leadsoft.currentPage", `${currentPage}`, {
-      expires: new Date(new Date().getFullYear() + 50, 1, 1),
-    });
-  }, [out, refresh]);
+    setCookieCurrent();
 
-  //takes the complete Array and 
+    return () => {
+      setCookieCurrent();
+    };
+  }, [out]);
+
+  //takes the complete Array and
   //transforms it into an Array of Arrays
   useEffect(() => {
     (() => {
@@ -214,6 +224,7 @@ function Listining({
           </Grid>
         </Grid>
       </Container>
+      {isLoading && <IsLoading />}
     </>
   );
 }

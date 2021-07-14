@@ -9,18 +9,44 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import { useTheme } from "@material-ui/core/styles";
-import { Context } from "@store/context/ListiningContext";
 
+import { Context } from "@store/context/ListiningContext";
+import { AuthContext } from "@store/context/AuthContext";
 import styles from "./styles.module.scss";
 import Title from "../Title";
 import { IFormCreate } from "src/types/index";
+import { createPerson } from "@services/api/persons/posts";
+import { useEffect } from "react";
+
+
 
 const Modal: React.FC = () => {
-  const { handleClose, isVisibileModalCreate } = useContext(Context);
+  const { handleClose, isVisibileModalCreate} = useContext(Context);
+  const { isLoading, setIsloading} = useContext(AuthContext);
   const { register, handleSubmit } = useForm<IFormCreate>();
   async function handleCreate(data: IFormCreate) {
-    console.log(data);
+    try {
+      setIsloading(true)
+      await createPerson(data)
+      handleClose()
+    } catch (error) {
+      setIsloading(false)
+      switch(error) {
+        case error.status === 400:
+          alert(`erro 400 ${error.detail}`)
+        case error.status === 401:
+          alert(`erro 401 ${error.detail}`)
+        case error.status === 422:
+          alert(`erro 422 ${error.detail}`)
+      }
+    }
   }
+
+  useEffect(() => {
+    return () => {
+      setIsloading(false)
+    }
+  })
 
   const [newPerson, setNewPerson] = useState();
 
@@ -74,7 +100,7 @@ const Modal: React.FC = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...register("DateOfBirth")}
+                {...register("dateOfBirth")}
               />
             </Grid>
             <Grid container className={styles.heightWeight}>

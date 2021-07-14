@@ -23,7 +23,7 @@ import useStyles from "./UseStyles";
 import { handleLogin } from "@services/api/authentication";
 import { AuthContext } from "@store/context/AuthContext";
 import { SignInData } from "src/types/index";
-import IsLoading from "@components/isLoading";
+import IsLoading from "@components/IsLoading";
 
 const Login: React.FC = () => {
   const { signIn, isLoading, setIsloading } = useContext(AuthContext);
@@ -39,10 +39,10 @@ const Login: React.FC = () => {
 
   async function handleSignIn(data: SignInData) {
     try {
-      setIsloading(true)
+      setIsloading(true);
       await signIn(data);
     } catch (err) {
-      setIsloading(false)
+      setIsloading(false);
       setErr("Dados inválidos, verifique suas informações");
     }
   }
@@ -58,7 +58,7 @@ const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    setIsloading(false)
+    setIsloading(false);
     reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [err]);
@@ -67,85 +67,79 @@ const Login: React.FC = () => {
 
   return (
     <>
-      {isLoading ? (
-        <IsLoading />
-      ) : (
-        <Container
-          component="main"
-          maxWidth="xs"
-          className={classes.backgroundContainer}
-        >
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <Image src="/img8.png" width="25" height="25" alt="logo" />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Login
-            </Typography>
-            <form
-              onSubmit={handleSubmit(handleSignIn)}
-              className={classes.form}
+      <Container
+        component="main"
+        maxWidth="xs"
+        className={classes.backgroundContainer}
+      >
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <Image src="/img8.png" width="25" height="25" alt="logo" />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
+          <form onSubmit={handleSubmit(handleSignIn)} className={classes.form}>
+            <TextField
+              color="primary"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="email"
+              label="Email Address"
+              {...register("username")}
+              autoComplete="email"
+              autoFocus
+              onClick={() => setErr("")}
+            />
+            <p className={classes.error}>{errors.username?.message}</p>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="password"
+              label="Password"
+              {...register("password")}
+              autoComplete="current-password"
+              type="password"
+              onClick={() => setErr("")}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox value="see" onClick={seePassword} color="primary" />
+              }
+              label="Mostrar senha"
+            />
+            <p className={classes.error}>{errors.password?.message}</p>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="default"
+              className={classes.submit}
             >
-              <TextField
-                color="primary"
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="email"
-                label="Email Address"
-                {...register("username")}
-                autoComplete="email"
-                autoFocus
-                onClick={() => setErr("")}
-              />
-              <p className={classes.error}>{errors.username?.message}</p>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="password"
-                label="Password"
-                {...register("password")}
-                autoComplete="current-password"
-                type="password"
-                onClick={() => setErr("")}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox value="see" onClick={seePassword} color="primary" />
-                }
-                label="Mostrar senha"
-              />
-              <p className={classes.error}>{errors.password?.message}</p>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="default"
-                className={classes.submit}
-              >
-                Login
-              </Button>
-              {!!err && <p className={classes.error}>{err}</p>}
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" className={classes.fake} variant="body2">
-                    esqueceu sua senha?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" className={classes.fake} variant="body2">
-                    {"não tem conta?"}
-                  </Link>
-                </Grid>
+              Login
+            </Button>
+            {!!err && <p className={classes.error}>{err}</p>}
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" className={classes.fake} variant="body2">
+                  esqueceu sua senha?
+                </Link>
               </Grid>
-            </form>
-          </div>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
-        </Container>
-      )}
+              <Grid item>
+                <Link href="#" className={classes.fake} variant="body2">
+                  {"não tem conta?"}
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+      {isLoading && <IsLoading />}
     </>
   );
 };

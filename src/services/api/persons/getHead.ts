@@ -64,7 +64,3 @@ export async function getOnePersonImc(id: string) {
 
   return resp;
 }
-
-/*
- **post
- */

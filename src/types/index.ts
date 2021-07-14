@@ -19,7 +19,7 @@ export type SignInData = {
 export type IFormCreate = {
   name: string;
   surname: string;
-  DateOfBirth: Date;
+  dateOfBirth: string;
   height: number;
   weight: number;
 };
