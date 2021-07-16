@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { format, parseISO } from "date-fns";
 
 import ModalM from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
@@ -18,35 +19,42 @@ import { IFormCreate } from "src/types/index";
 import { createPerson } from "@services/api/persons/posts";
 import { useEffect } from "react";
 
-
-
 const Modal: React.FC = () => {
-  const { handleClose, isVisibileModalCreate} = useContext(Context);
-  const { isLoading, setIsloading} = useContext(AuthContext);
+  const { handleClose, isVisibileModalCreate } = useContext(Context);
+  const { isLoading, setIsloading } = useContext(AuthContext);
   const { register, handleSubmit } = useForm<IFormCreate>();
   async function handleCreate(data: IFormCreate) {
     try {
-      setIsloading(true)
-      await createPerson(data)
-      handleClose()
+      //animation of loading
+      setIsloading(true);
+
+      //format date
+      const hoursOfCreate = new Date(data.dateOfBirth);
+      const hourFormated = format(
+        hoursOfCreate,
+        "Y'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"
+      );
+      
+      //Requisition the api
+      await createPerson({
+        ...data,
+        dateOfBirth: hourFormated,
+        weight: parseInt(`${data.weight}`),
+        height: parseInt(`${data.height}`)
+      });
+
+      handleClose();
     } catch (error) {
-      setIsloading(false)
-      switch(error) {
-        case error.status === 400:
-          alert(`erro 400 ${error.detail}`)
-        case error.status === 401:
-          alert(`erro 401 ${error.detail}`)
-        case error.status === 422:
-          alert(`erro 422 ${error.detail}`)
-      }
+      setIsloading(false);
+      alert(`erro 400 ${error.message}`);
     }
   }
 
   useEffect(() => {
     return () => {
-      setIsloading(false)
-    }
-  })
+      setIsloading(false);
+    };
+  });
 
   const [newPerson, setNewPerson] = useState();
 
@@ -112,8 +120,8 @@ const Modal: React.FC = () => {
                   required
                   fullWidth
                   id="email"
-                  label="altura"
-                  {...register("height")}
+                  label="peso"
+                  {...register("weight")}
                 />
               </Grid>
               <Grid item xs={12} sm={5}>
@@ -124,8 +132,8 @@ const Modal: React.FC = () => {
                   required
                   fullWidth
                   id="email"
-                  label="peso"
-                  {...register("weight")}
+                  label="altura"
+                  {...register("height")}
                 />
               </Grid>
             </Grid>

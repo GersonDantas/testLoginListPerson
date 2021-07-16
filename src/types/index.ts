@@ -20,8 +20,8 @@ export type IFormCreate = {
   name: string;
   surname: string;
   dateOfBirth: string;
-  height: number;
   weight: number;
+  height: number;
 };
 
 export type buttonsPage = {
