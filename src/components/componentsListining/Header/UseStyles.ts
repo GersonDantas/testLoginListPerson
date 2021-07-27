@@ -1,6 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
 import MyTheme from "@styles/materialTheme";
-const {palette} = MyTheme
 
 const useStyles = makeStyles((theme) => ({
   titleAppBar: {
@@ -12,13 +11,13 @@ const useStyles = makeStyles((theme) => ({
     width: "10vw",
   },
   logo: {
-    backgroundColor: palette.info.main,
+    backgroundColor: theme.palette.info.main,
     borderRadius: 10,
     height: '100vh',
     width: '100vw',
   },
   appBar: {
-    background: palette.background.default,
+    background: theme.palette.background.default,
   }
 }));
 

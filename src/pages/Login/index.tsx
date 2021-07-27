@@ -19,7 +19,7 @@ import Button from "@material-ui/core/Button";
 
 //Relatives imports
 import Copyright from "@components/Copyright";
-import useStyles from "./UseStyles";
+import useStyles from "@styles/stylesPages/Login";
 import { handleLogin } from "@services/api/authentication";
 import { AuthContext } from "@store/context/AuthContext";
 import { SignInData } from "src/types/index";

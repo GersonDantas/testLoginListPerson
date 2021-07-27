@@ -23,11 +23,11 @@ import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 
 import Copyright from "@components/Copyright";
-import TableRows from "./componentsListining/TableRows";
-import Header from "./componentsListining/Header";
-import Title from "./componentsListining/Title";
-import Modal from "./componentsListining/ModalCreate";
-import useStyles from "./UseStyles";
+import TableRows from "@components/componentsListining/TableRows";
+import Header from "@components/componentsListining/Header";
+import Title from "@components/componentsListining/Title";
+import Modal from "@components/componentsListining/ModalCreate";
+import useStyles from "@styles/stylesPages/Listining";
 import { getApiClient } from "@services/api/serverSide";
 import Pagination from "src/hooks/pagination";
 import { iunicPerson } from "src/types/";
