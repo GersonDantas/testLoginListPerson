@@ -100,6 +100,7 @@ function Listining({
       setCookieCurrent();
     };
   }, [out]);
+  
   //takes the complete Array and
   //transforms it into an Array of Arrays
   useEffect(() => {
